@@ -2,26 +2,32 @@ from iex import Stock
 import telegram_send
 import sched,time
 
-
+flag1 = 0
+flag2 = 0
 def print_stocks():
-    fit = int(Stock("FIT").price())
-    tes = int(Stock("TSLA").price())
+    fit = float(Stock("FIT").price())
+    tes = float(Stock("TSLA").price())
     if fit > 5:
         telegram_send.send(messages=['FIT: '+str(fit)])
+        flag1 = 1
 
     if  tes > 200:
         telegram_send.send(messages=['TSLA: ' + str(tes)])
-
+        flag2 = 1
+    if flag1 == 1:
+        time.sleep(300)
+        flag1 = 0
+        flag2 = 0
 
 if __name__ == '__main__':
 
 
-    s = sched.scheduler(time.time, time.sleep)
+
     while 1:
-        s.enter(10,1,print_stocks)
-        s.run()
+
 
         print_stocks()
+
 
 
 
